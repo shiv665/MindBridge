@@ -1,10 +1,7 @@
-# 🧠 MindBridge
+#  MindBridge
 
 <div align="center">
 
-![MindBridge Logo](https://img.shields.io/badge/MindBridge-Mental%20Wellness-6366f1?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0id2hpdGUiPjxwYXRoIGQ9Ik0xMiAyQzYuNDggMiAyIDYuNDggMiAxMnM0LjQ4IDEwIDEwIDEwIDEwLTQuNDggMTAtMTBTMTcuNTIgMiAxMiAyem0xIDE3aC0ydi0yaDJ2MnptMi4wNy03LjI1bC0uOS45MWMtLjcyLjczLTEuMTcgMS4zMy0xLjE3IDIuMzRoLTJ2LS41YzAtLjkyLjQ1LTEuNzUgMS4xNy0yLjI1bDEuMjQtMS4yNmMuMzctLjM3LjU5LS44Ny41OS0xLjQyIDAtMS4xLS45LTItMi0ycy0yIC45LTIgMkg4YzAtMi4yMSAxLjc5LTQgNC00czQgMS43OSA0IDRjMCAuODgtLjM2IDEuNjgtLjkzIDIuMjV6Ii8+PC9zdmc+)
-![Version](https://img.shields.io/badge/version-1.0.0-blue?style=for-the-badge)
-![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)
 
 **A safe space for mental wellness, community support, and personal growth**
 
