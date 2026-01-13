@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #1a73e8;
+  --primary-hover: #1557b0;
+  --surface: #ffffff;
+  --surface-variant: #f8f9fa;
+  --on-surface: #202124;
+  --on-surface-variant: #5f6368;
+  --outline: #dadce0;
+  --error: #d93025;
+  --success: #1e8e3e;
+  --warning: #f9ab00;
+}
+
+body { 
+  @apply bg-gray-50 text-gray-900 min-h-screen antialiased;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+}
+
+.card { 
+  @apply bg-white shadow-sm rounded-xl p-6 border border-gray-200;
+}
+
+.card-hover {
+  @apply bg-white shadow-sm rounded-xl p-6 border border-gray-200 hover:shadow-md hover:border-gray-300 transition-all;
+}
+
+.btn { 
+  @apply inline-flex items-center justify-center px-6 py-2.5 rounded-lg font-medium bg-blue-600 text-white hover:bg-blue-700 transition-colors shadow-sm;
+}
+
+.btn-secondary {
+  @apply inline-flex items-center justify-center px-6 py-2.5 rounded-lg font-medium bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 transition-colors;
+}
+
+.btn-ghost {
+  @apply inline-flex items-center justify-center px-4 py-2 rounded-lg font-medium text-blue-600 hover:bg-blue-50 transition-colors;
+}
+
+.input { 
+  @apply w-full px-4 py-2.5 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-500 transition-all outline-none;
+}
+
+.input:hover {
+  @apply border-gray-400;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-400;
+}

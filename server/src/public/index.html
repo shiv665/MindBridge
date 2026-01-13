@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MindBridge API</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      color: #1f2937;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: white;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .logo-icon {
+      width: 64px;
+      height: 64px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(10px);
+    }
+
+    .logo-icon svg {
+      width: 36px;
+      height: 36px;
+      fill: white;
+    }
+
+    .header h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .header p {
+      font-size: 1.25rem;
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      margin-top: 1.5rem;
+      backdrop-filter: blur(10px);
+    }
+
+    .status-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: #10b981;
+      border-radius: 50%;
+      margin-right: 0.5rem;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    /* Main Content */
+    .main {
+      background: #f9fafb;
+      border-radius: 24px 24px 0 0;
+      padding: 3rem 2rem;
+      margin-top: -2rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    /* Stats Cards */
+    .stat-card {
+      background: white;
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      border: 1px solid #e5e7eb;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .stat-card .icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+
+    .stat-card .icon svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    .stat-card h3 {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #6b7280;
+      margin-bottom: 0.25rem;
+    }
+
+    .stat-card .value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #1f2937;
+    }
+
+    .icon-blue { background: #dbeafe; color: #2563eb; }
+    .icon-green { background: #d1fae5; color: #059669; }
+    .icon-purple { background: #ede9fe; color: #7c3aed; }
+    .icon-orange { background: #ffedd5; color: #ea580c; }
+
+    /* API Endpoints Section */
+    .section {
+      margin-bottom: 3rem;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .section-header h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #1f2937;
+    }
+
+    .section-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .section-icon svg {
+      width: 20px;
+      height: 20px;
+      fill: white;
+    }
+
+    /* Endpoint Cards */
+    .endpoint-group {
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      border: 1px solid #e5e7eb;
+      margin-bottom: 1.5rem;
+    }
+
+    .endpoint-group-header {
+      background: #f9fafb;
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .endpoint-group-header h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #374151;
+    }
+
+    .endpoint-group-header .tag {
+      font-size: 0.75rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 50px;
+      background: #e0e7ff;
+      color: #4338ca;
+      font-weight: 500;
+    }
+
+    .endpoint {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid #f3f4f6;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transition: background 0.15s;
+    }
+
+    .endpoint:last-child {
+      border-bottom: none;
+    }
+
+    .endpoint:hover {
+      background: #f9fafb;
+    }
+
+    .method {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      min-width: 60px;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .method-get { background: #d1fae5; color: #059669; }
+    .method-post { background: #dbeafe; color: #2563eb; }
+    .method-put { background: #fef3c7; color: #d97706; }
+    .method-delete { background: #fee2e2; color: #dc2626; }
+
+    .endpoint-path {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 0.875rem;
+      color: #374151;
+      flex: 1;
+    }
+
+    .endpoint-desc {
+      font-size: 0.875rem;
+      color: #6b7280;
+    }
+
+    /* Features Section */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .feature-card {
+      background: white;
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      border: 1px solid #e5e7eb;
+    }
+
+    .feature-card .icon {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+
+    .feature-card .icon svg {
+      width: 24px;
+      height: 24px;
+      fill: white;
+    }
+
+    .feature-card h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 0.5rem;
+    }
+
+    .feature-card p {
+      font-size: 0.875rem;
+      color: #6b7280;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: #6b7280;
+      font-size: 0.875rem;
+      border-top: 1px solid #e5e7eb;
+      margin-top: 2rem;
+    }
+
+    .footer a {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 2rem;
+      }
+
+      .header p {
+        font-size: 1rem;
+      }
+
+      .endpoint {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+
+      .endpoint-desc {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+        </svg>
+      </div>
+      <h1>MindBridge API</h1>
+    </div>
+    <p>A comprehensive REST API for mental health support, community circles, mood tracking, and journaling.</p>
+    <div class="badge">
+      <span class="status-dot"></span>
+      Server Running
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="container">
+      <!-- Stats -->
+      <div class="grid">
+        <div class="stat-card">
+          <div class="icon icon-blue">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+          </div>
+          <h3>Authentication</h3>
+          <div class="value">JWT + Google OAuth</div>
+        </div>
+        <div class="stat-card">
+          <div class="icon icon-green">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+          </div>
+          <h3>Database</h3>
+          <div class="value">MongoDB</div>
+        </div>
+        <div class="stat-card">
+          <div class="icon icon-purple">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+          </div>
+          <h3>Total Endpoints</h3>
+          <div class="value">30+</div>
+        </div>
+        <div class="stat-card">
+          <div class="icon icon-orange">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+          </div>
+          <h3>Security</h3>
+          <div class="value">Protected Routes</div>
+        </div>
+      </div>
+
+      <!-- API Endpoints -->
+      <div class="section">
+        <div class="section-header">
+          <div class="section-icon">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+          </div>
+          <h2>API Endpoints</h2>
+        </div>
+
+        <!-- Auth Routes -->
+        <div class="endpoint-group">
+          <div class="endpoint-group-header">
+            <h3>🔐 Authentication</h3>
+            <span class="tag">/api/auth</span>
+          </div>
+          <div class="endpoint">
+            <span class="method method-post">POST</span>
+            <span class="endpoint-path">/register</span>
+            <span class="endpoint-desc">Create new user account</span>
+          </div>
+          <div class="endpoint">
+            <span class="method method-post">POST</span>
+            <span class="endpoint-path">/login</span>
+            <span class="endpoint-desc">Login with email & password</span>
+          </div>
+          <div class="endpoint">
+            <span class="method method-post">POST</span>
+            <span class="endpoint-path">/google</span>
+            <span class="endpoint-desc">Google OAuth authentication</span>
+          </div>
+          <div class="endpoint">
+            <span class="method method-get">GET</span>
+            <span class="endpoint-path">/me</span>
+            <span class="endpoint-desc">Get current user profile</span>
+          </div>
+          <div class="endpoint">
+            <span class="method method-put">PUT</span>
+            <span class="endpoint-path">/me</span>
+            <span class="endpoint-desc">Update user profile</span>
+          </div>
+          <div class="endpoint">
+            <span class="method method-put">PUT</span>
+            <span class="endpoint-path">/change-password</span>
+            <span class="endpoint-desc">Change user password</span>
+          </div>
+        </div>
+
+        <!-- Circles Routes -->
+        <div class="endpoint-group">
+          <div class="endpoint-group-header">
+            <h3>👥 Circles</h3>
+            <span class="tag">/api/circles</span>
+          </div>
+          <div class="endpoint">
+            <span class="method method-get">GET</span>
+            <span class="endpoint-path">/</span>
+            <span class="endpoint-desc">List all circles</span>
+          </div>
+          <div class="endpoint">
+            <span class="method method-get">GET</span>
+            <span class="endpoint-path">/recommendations</span>
+            <span class="endpoint-desc">Get personalized recommendations</span>
+          </div>
+          <div class="endpoint">
+            <span class="method method-get">GET</span>
+            <span class="endpoint-path">/:id</span>
+            <span class="endpoint-desc">Get circle details</span>
+          </div>
+          <div class="endpoint">
+            <span class="method method-post">POST</span>
+            <span class="endpoint-path">/</span>
+            <span class="endpoint-desc">Create new circle</span>
+          </div>
+          <div class="endpoint">
+            <span class="method method-put">PUT</span>
+            <span class="endpoint-path">/:id</span>
+            <span class="endpoint-desc">Update circle (admin only)</span>
+          </div>
+          <div class="endpoint">
+            <span class="method method-post">POST</span>
+            <span class="endpoint-path">/:id/join</span>
+            <span class="endpoint-desc">Join or request to join</span>
+          </div>
+          <div class="endpoint">
+            <span class="method method-post">POST</span>
+            <span class="endpoint-path">/:id/leave</span>
+            <span class="endpoint-desc">Leave circle</span>
+          </div>
+        </div>
+
+        <!-- Posts Routes -->
+        <div class="endpoint-group">
+          <div class="endpoint-group-header">
+            <h3>📝 Posts</h3>
+            <span class="tag">/api/posts</span>
+          </div>
+          <div class="endpoint">
+            <span class="method method-get">GET</span>
+            <span class="endpoint-path">/circle/:circleId</span>
+            <span class="endpoint-desc">Get posts in a circle</span>
+          </div>
+          <div class="endpoint">
+            <span class="method method-get">GET</span>
+            <span class="endpoint-path">/me</span>
+            <span class="endpoint-desc">Get user's posts</span>
+          </div>
+          <div class="endpoint">
+            <span class="method method-post">POST</span>
+            <span class="endpoint-path">/</span>
+            <span class="endpoint-desc">Create new post</span>
+          </div>
+          <div class="endpoint">
+            <span class="method method-post">POST</span>
+            <span class="endpoint-path">/:id/like</span>
+            <span class="endpoint-desc">Like a post</span>
+          </div>
+          <div class="endpoint">
+            <span class="method method-post">POST</span>
+            <span class="endpoint-path">/:id/comments</span>
+            <span class="endpoint-desc">Add comment to post</span>
+          </div>
+        </div>
+
+        <!-- Mood Routes -->
+        <div class="endpoint-group">
+          <div class="endpoint-group-header">
+            <h3>😊 Mood Tracking</h3>
+            <span class="tag">/api/mood</span>
+          </div>
+          <div class="endpoint">
+            <span class="method method-get">GET</span>
+            <span class="endpoint-path">/</span>
+            <span class="endpoint-desc">Get all mood entries</span>
+          </div>
+          <div class="endpoint">
+            <span class="method method-get">GET</span>
+            <span class="endpoint-path">/today</span>
+            <span class="endpoint-desc">Get today's mood</span>
+          </div>
+          <div class="endpoint">
+            <span class="method method-post">POST</span>
+            <span class="endpoint-path">/</span>
+            <span class="endpoint-desc">Log new mood entry</span>
+          </div>
+        </div>
+
+        <!-- Journal Routes -->
+        <div class="endpoint-group">
+          <div class="endpoint-group-header">
+            <h3>📓 Journals</h3>
+            <span class="tag">/api/journals</span>
+          </div>
+          <div class="endpoint">
+            <span class="method method-get">GET</span>
+            <span class="endpoint-path">/</span>
+            <span class="endpoint-desc">Get all journal entries</span>
+          </div>
+          <div class="endpoint">
+            <span class="method method-post">POST</span>
+            <span class="endpoint-path">/</span>
+            <span class="endpoint-desc">Create journal entry</span>
+          </div>
+          <div class="endpoint">
+            <span class="method method-put">PUT</span>
+            <span class="endpoint-path">/:id</span>
+            <span class="endpoint-desc">Update journal entry</span>
+          </div>
+          <div class="endpoint">
+            <span class="method method-delete">DELETE</span>
+            <span class="endpoint-path">/:id</span>
+            <span class="endpoint-desc">Delete journal entry</span>
+          </div>
+        </div>
+
+        <!-- Notifications Routes -->
+        <div class="endpoint-group">
+          <div class="endpoint-group-header">
+            <h3>🔔 Notifications</h3>
+            <span class="tag">/api/notifications</span>
+          </div>
+          <div class="endpoint">
+            <span class="method method-get">GET</span>
+            <span class="endpoint-path">/</span>
+            <span class="endpoint-desc">Get all notifications</span>
+          </div>
+          <div class="endpoint">
+            <span class="method method-put">PUT</span>
+            <span class="endpoint-path">/:id/read</span>
+            <span class="endpoint-desc">Mark as read</span>
+          </div>
+          <div class="endpoint">
+            <span class="method method-delete">DELETE</span>
+            <span class="endpoint-path">/:id</span>
+            <span class="endpoint-desc">Delete notification</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Features -->
+      <div class="section">
+        <div class="section-header">
+          <div class="section-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+          </div>
+          <h2>Features</h2>
+        </div>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="icon">
+              <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+            </div>
+            <h3>Support Circles</h3>
+            <p>Create and join community circles with tags for personalized recommendations.</p>
+          </div>
+          <div class="feature-card">
+            <div class="icon">
+              <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/></svg>
+            </div>
+            <h3>Mood Tracking</h3>
+            <p>Track daily moods with notes and view trends over time with visual charts.</p>
+          </div>
+          <div class="feature-card">
+            <div class="icon">
+              <svg viewBox="0 0 24 24"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+            </div>
+            <h3>Private Journaling</h3>
+            <p>Write private journal entries with calendar view and date filtering.</p>
+          </div>
+          <div class="feature-card">
+            <div class="icon">
+              <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+            </div>
+            <h3>Real-time Notifications</h3>
+            <p>Get notified about new posts, comments, and circle activities.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">
+        <p>MindBridge API v1.0 • Built with ❤️ using Express.js & MongoDB</p>
+        <p style="margin-top: 0.5rem;">
+          <a href="https://github.com" target="_blank">GitHub</a> • 
+          <a href="mailto:support@mindbridge.app">Contact</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Simple animation on load
+    document.addEventListener('DOMContentLoaded', () => {
+      const cards = document.querySelectorAll('.stat-card, .endpoint-group, .feature-card');
+      cards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        setTimeout(() => {
+          card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+          card.style.opacity = '1';
+          card.style.transform = 'translateY(0)';
+        }, index * 100);
+      });
+    });
+  </script>
+</body>
+</html>
